@@ -386,6 +386,7 @@
       background: var(--teal-dim);
       box-shadow: 0 0 16px var(--teal-dim);
     }
+
     /* About */
     #about {
       padding-top: 1rem;
@@ -780,6 +781,10 @@
       cursor: pointer;
       width: 100%;
       box-sizing: border-box;
+      font: inherit;
+      color: inherit;
+      appearance: none;
+      -webkit-appearance: none;
       opacity: 0.6;
       transition: opacity 0.25s ease, border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.35s ease;
     }
@@ -825,15 +830,54 @@
       gap: 8px;
       margin-bottom: 2px;
     }
-    .tl-logo {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
-      object-fit: contain;
-      background: #fff;
+    .tl-avatar {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       flex-shrink: 0;
-      border: 1px solid rgba(0, 212, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      border: 1px solid rgba(0, 212, 255, 0.4);
+      color: #ffffff;
+      line-height: 1;
+      overflow: hidden;
     }
+    .tl-avatar-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .tl-avatar-img.tl-avatar-img--missing {
+      display: none;
+    }
+    .tl-avatar--re .tl-avatar-img {
+      object-fit: contain;
+      object-position: center center;
+      background-color: #ffffff;
+    }
+    .tl-avatar-initials {
+      position: relative;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .tl-avatar:has(.tl-avatar-img:not(.tl-avatar-img--missing)) .tl-avatar-initials {
+      opacity: 0;
+    }
+    .tl-avatar--hc { background: linear-gradient(145deg, #0e7490, #06b6d4); }
+    .tl-avatar--unt { background: linear-gradient(145deg, #1e3a5f, #0369a1); }
+    .tl-avatar--vc { background: linear-gradient(145deg, #5b21b6, #6366f1); }
+    .tl-avatar--nr { background: linear-gradient(145deg, #92400e, #d97706); }
+    .tl-avatar--re { background: linear-gradient(145deg, #9d174d, #ec4899); }
     .tl-co {
       font-size: 13px;
       font-weight: 700;
@@ -1000,14 +1044,19 @@
     .exp-mini-dough {
       flex: 1 1 33%;
       min-width: 0;
-      height: 100%;
-      max-height: 200px;
+      max-height: 220px;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
     }
-    .exp-mini-dough canvas {
-      display: block;
+    .exp-mini-dough > canvas {
+      flex: 1 1 auto;
+      min-height: 100px;
       width: 100% !important;
-      height: 100% !important;
+      max-height: 170px;
+      display: block;
     }
     .exp-mini-cap {
       font-family: var(--font-mono);
@@ -1044,7 +1093,6 @@
       #experience.experience-section.exp-v2 {
         max-height: none;
         overflow: visible;
-        padding: 28px 24px 32px;
       }
       .exp-v2-shell {
         flex-direction: column;
@@ -1354,7 +1402,6 @@
       border-color: var(--teal);
     }
 
-    /* Mobile: readable layout, tap targets, no iOS input zoom */
     @media (max-width: 640px) {
       .about-grid-v2 {
         gap: 1.75rem;
@@ -1798,6 +1845,23 @@
                       </div>
                     </li>
                   </ul>
+                  <p class="used-in-sub">CERTIFICATIONS</p>
+                  <ul class="used-in-list">
+                    <li class="used-in-item">
+                      <span class="used-dot used-dot--project" aria-hidden="true"></span>
+                      <div>
+                        <strong>Google Cloud Skills Boost</strong>
+                        <span class="used-impact">Google</span>
+                      </div>
+                    </li>
+                    <li class="used-in-item">
+                      <span class="used-dot used-dot--project" aria-hidden="true"></span>
+                      <div>
+                        <strong>Gemini for Application Developers</strong>
+                        <span class="used-impact">Google</span>
+                      </div>
+                    </li>
+                  </ul>
                 </aside>
               </div>
             </div>
@@ -1856,46 +1920,61 @@
         <div class="skills-dark-wrap">
         <div class="exp-v2-shell">
           <div class="exp-v2-timeline" id="exp-timeline" role="tablist" aria-label="Work history">
-            <button type="button" class="tl-entry tl-anim-in active" data-job-id="1" role="tab" aria-selected="true" id="exp-tl-1">
+            <button type="button" class="tl-entry tl-anim-in active" data-job-id="1" role="tab" aria-selected="true" id="exp-tl-1" aria-controls="exp-detail-panel">
               <span class="tl-dot" aria-hidden="true"></span>
               <div class="tl-row-top">
-                <img class="tl-logo" src="images/logo-holiday-channel.png" alt="" width="48" height="48" decoding="async" />
+                <span class="tl-avatar tl-avatar--hc" aria-hidden="true">
+                  <img class="tl-avatar-img" src="assets/logos/holiday-channel.png" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.classList.add('tl-avatar-img--missing')" />
+                  <span class="tl-avatar-initials">HC</span>
+                </span>
                 <span class="tl-co">Holiday Channel®</span>
               </div>
               <div class="tl-role">Data Analyst (AI/ML)</div>
               <span class="tl-dates">Mar 2026 – Present</span>
             </button>
-            <button type="button" class="tl-entry tl-anim-in" data-job-id="2" role="tab" aria-selected="false" id="exp-tl-2">
+            <button type="button" class="tl-entry tl-anim-in" data-job-id="2" role="tab" aria-selected="false" id="exp-tl-2" aria-controls="exp-detail-panel">
               <span class="tl-dot" aria-hidden="true"></span>
               <div class="tl-row-top">
-                <img class="tl-logo" src="images/logo-unt.png" alt="" width="48" height="48" decoding="async" />
+                <span class="tl-avatar tl-avatar--unt" aria-hidden="true">
+                  <img class="tl-avatar-img" src="assets/logos/unt.png" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.classList.add('tl-avatar-img--missing')" />
+                  <span class="tl-avatar-initials">UNT</span>
+                </span>
                 <span class="tl-co">University of North Texas</span>
               </div>
               <div class="tl-role">Data Analytics Lead TA</div>
               <span class="tl-dates">Aug 2024 – Dec 2025</span>
             </button>
-            <button type="button" class="tl-entry tl-anim-in" data-job-id="3" role="tab" aria-selected="false" id="exp-tl-3">
+            <button type="button" class="tl-entry tl-anim-in" data-job-id="3" role="tab" aria-selected="false" id="exp-tl-3" aria-controls="exp-detail-panel">
               <span class="tl-dot" aria-hidden="true"></span>
               <div class="tl-row-top">
-                <img class="tl-logo" src="images/logo-virtusa.png" alt="" width="48" height="48" decoding="async" />
+                <span class="tl-avatar tl-avatar--vc" aria-hidden="true">
+                  <img class="tl-avatar-img" src="assets/logos/virtusa.png" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.classList.add('tl-avatar-img--missing')" />
+                  <span class="tl-avatar-initials">VC</span>
+                </span>
                 <span class="tl-co">Virtusa Consulting Services</span>
               </div>
               <div class="tl-role">Data Scientist</div>
               <span class="tl-dates">Jan – Dec 2023</span>
             </button>
-            <button type="button" class="tl-entry tl-anim-in" data-job-id="4" role="tab" aria-selected="false" id="exp-tl-4">
+            <button type="button" class="tl-entry tl-anim-in" data-job-id="4" role="tab" aria-selected="false" id="exp-tl-4" aria-controls="exp-detail-panel">
               <span class="tl-dot" aria-hidden="true"></span>
               <div class="tl-row-top">
-                <img class="tl-logo" src="images/logo-nr-packaging.png" alt="" width="48" height="48" decoding="async" />
+                <span class="tl-avatar tl-avatar--nr" aria-hidden="true">
+                  <img class="tl-avatar-img" src="assets/logos/nr-packaging.png" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.classList.add('tl-avatar-img--missing')" />
+                  <span class="tl-avatar-initials">NR</span>
+                </span>
                 <span class="tl-co">N.R. Packaging Industries</span>
               </div>
               <div class="tl-role">Data Management Analyst</div>
               <span class="tl-dates">Sep 2021 – Dec 2022</span>
             </button>
-            <button type="button" class="tl-entry tl-anim-in" data-job-id="5" role="tab" aria-selected="false" id="exp-tl-5">
+            <button type="button" class="tl-entry tl-anim-in" data-job-id="5" role="tab" aria-selected="false" id="exp-tl-5" aria-controls="exp-detail-panel">
               <span class="tl-dot" aria-hidden="true"></span>
               <div class="tl-row-top">
-                <img class="tl-logo" src="images/logo-rainbow-events.png" alt="" width="48" height="48" decoding="async" />
+                <span class="tl-avatar tl-avatar--re" aria-hidden="true">
+                  <img class="tl-avatar-img" src="assets/logos/rainbow-events.png" alt="" width="36" height="36" loading="lazy" decoding="async" onerror="this.classList.add('tl-avatar-img--missing')" />
+                  <span class="tl-avatar-initials">RE</span>
+                </span>
                 <span class="tl-co">Rainbow Events</span>
               </div>
               <div class="tl-role">Data Analyst</div>
@@ -1903,7 +1982,7 @@
             </button>
           </div>
           <div class="exp-v2-detail">
-            <div class="exp-detail-panel" id="exp-detail-panel">
+            <div class="exp-detail-panel" id="exp-detail-panel" role="tabpanel" aria-labelledby="exp-tl-1">
               <div class="exp-detail-inner" id="exp-detail-inner" aria-live="polite"></div>
             </div>
           </div>
@@ -2006,7 +2085,7 @@
             <a href="mailto:vineelakandunurumuni2024@gmail.com"><i class="fas fa-envelope"></i> vineelakandunurumuni2024@gmail.com</a>
             <a href="https://www.linkedin.com/in/vineela-kandunuru-muni/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
           </div>
-          <form class="terminal-form" id="contact-form" action="#" method="post">
+          <form class="terminal-form" id="contactForm" action="#" method="post">
             <p class="prompt">&gt; send_message --secure</p>
             <label for="c-name">name</label>
             <input class="terminal-input" type="text" id="c-name" name="name" placeholder="your_name" autocomplete="name" />
@@ -2238,37 +2317,6 @@
         io.observe(strip);
       })();
 
-      /* Stats counters */
-      var statsPanel = document.getElementById("stats-panel");
-      if (statsPanel) {
-        var statsAnimated = false;
-        var statObs = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (en) {
-              if (!en.isIntersecting || statsAnimated) return;
-              statsAnimated = true;
-              statsPanel.querySelectorAll(".stat-card").forEach(function (card, idx) {
-                var wrap = card.querySelector(".stat-num");
-                var inner = wrap.querySelector(".stat-num-inner");
-                var target = parseInt(wrap.getAttribute("data-target"), 10);
-                var t0 = null;
-                var dur = 2000;
-                function step(now) {
-                  if (t0 === null) t0 = now;
-                  var t = Math.min(1, (now - t0) / dur);
-                  var ease = 1 - Math.pow(1 - t, 3);
-                  inner.textContent = String(Math.round(target * ease));
-                  if (t < 1) requestAnimationFrame(step);
-                }
-                setTimeout(function () { requestAnimationFrame(step); }, idx * 100);
-              });
-            });
-          },
-          { threshold: 0.35 }
-        );
-        statObs.observe(statsPanel);
-      }
-
       /* Chart.js */
       var chartDefaults = {
         color: "#64748b",
@@ -2396,6 +2444,7 @@
       /* Experience v2 — timeline + Chart.js detail panel */
       var EXP_CHART_INSTANCES = [];
       var EXP_FONT = { size: 10, family: "'DM Sans', sans-serif" };
+      var EXP_FONT_MONO = { size: 10, family: "'Space Mono', monospace" };
       var EXP_MUTED = "#8892a4";
       var EXP_TEAL = "#00d4ff";
       var EXP_AMBER = "#f5a623";
@@ -2416,7 +2465,7 @@
           ],
           skillsType: "barH",
           skillsLabels: ["Python", "SQL", "Power BI", "Machine Learning"],
-          skillsValues: [90, 85, 80, 75]
+          skillsValues: [92, 85, 80, 75]
         },
         {
           id: "2",
@@ -2453,7 +2502,7 @@
           role: "Data Management Analyst",
           dates: "Sep 2021 – Dec 2022",
           impactType: "barH",
-          impactLabels: ["Reporting Efficiency Improved", "Data Accuracy Achieved", "ETL Pipeline Optimization", "Stakeholder Reporting Coverage"],
+          impactLabels: ["Report Efficiency", "Data Accuracy", "ETL Optimization", "Report Coverage"],
           impactValues: [40, 98, 75, 85],
           skillsType: "barH",
           skillsLabels: ["SQL", "Power BI", "Excel", "R"],
@@ -2464,9 +2513,12 @@
           panelCompany: "Rainbow Events",
           role: "Data Analyst",
           dates: "Jul 2022 – Oct 2022",
-          impactType: "barH",
-          impactLabels: ["Documentation & Process Standards", "Data Integrity", "Workflow Efficiency"],
-          impactValues: [90, 85, 78],
+          impactType: "doughnuts3",
+          impactMetrics: [
+            { label: "Documentation & Process Standards", value: 90 },
+            { label: "Data Integrity", value: 85 },
+            { label: "Workflow Efficiency", value: 78 }
+          ],
           skillsType: "barH",
           skillsLabels: ["Excel", "SQL", "Data Reporting"],
           skillsValues: [80, 70, 75]
@@ -2501,28 +2553,46 @@
               borderWidth: 1,
               titleFont: EXP_FONT,
               bodyFont: EXP_FONT
-            }
+            },
+            datalabels: { display: false }
           }
         };
       }
 
-      function expHorizontalBarConfig(labels, values, legendOff) {
+      function expHorizontalBarConfig(labels, values, legendOff, untImpact) {
         var o = expBaseOpts();
+        o.layout = untImpact
+          ? { padding: { left: 10, right: 14, top: 12, bottom: 10 } }
+          : { padding: { left: 4, right: 14, top: 12, bottom: 10 } };
         if (legendOff) o.plugins.legend.display = false;
         o.indexAxis = "y";
+        var yTickFont = untImpact ? { size: 8, family: "'Space Mono', monospace" } : EXP_FONT_MONO;
         o.scales = {
           x: {
             min: 0,
             max: 100,
             grid: { color: "rgba(0,212,255,0.08)" },
-            ticks: { color: EXP_MUTED, font: EXP_FONT }
+            ticks: {
+              color: EXP_MUTED,
+              font: EXP_FONT_MONO,
+              stepSize: 50,
+              callback: function (v) { return v; }
+            }
           },
           y: {
-            grid: { display: false },
-            ticks: { color: EXP_MUTED, font: EXP_FONT }
+            grid: { display: false, offset: true },
+            ticks: {
+              color: "#e2e8f0",
+              font: yTickFont,
+              autoSkip: false,
+              padding: 4,
+              crossAlign: "center",
+              mirror: false
+            }
           }
         };
-        o.datasets = { bar: { maxBarThickness: 18 } };
+        o.datasets = { bar: { maxBarThickness: 16, categoryPercentage: 0.78, barPercentage: 0.92 } };
+        o.animation = { duration: 800, easing: "easeOutQuart" };
         return {
           type: "bar",
           data: {
@@ -2531,7 +2601,8 @@
               label: "",
               data: values,
               backgroundColor: function (c) {
-                var g = c.chart.ctx.createLinearGradient(0, 0, c.chart.width || 200, 0);
+                var chart = c.chart;
+                var g = chart.ctx.createLinearGradient(0, 0, chart.width || 200, 0);
                 g.addColorStop(0, EXP_TEAL);
                 g.addColorStop(1, EXP_AMBER);
                 return g;
@@ -2548,7 +2619,7 @@
         host.innerHTML = "";
         if (job.impactType === "doughnuts3") {
           host.className = "exp-doughnuts-row";
-          job.impactMetrics.forEach(function (m, idx) {
+          job.impactMetrics.forEach(function (m) {
             var wrap = document.createElement("div");
             wrap.className = "exp-mini-dough";
             var cv = document.createElement("canvas");
@@ -2565,7 +2636,7 @@
                 labels: ["v", "r"],
                 datasets: [{
                   data: [m.value, Math.max(0, 100 - m.value)],
-                  backgroundColor: [EXP_TEAL, "rgba(255,255,255,0.06)"],
+                  backgroundColor: [EXP_TEAL, "rgba(71, 85, 105, 0.35)"],
                   borderWidth: 0,
                   hoverOffset: 0
                 }]
@@ -2579,6 +2650,7 @@
                 animation: { duration: 800, easing: "easeOutQuart" },
                 plugins: {
                   legend: { display: false },
+                  datalabels: { display: false },
                   tooltip: {
                     enabled: true,
                     callbacks: {
@@ -2599,8 +2671,8 @@
           host.className = "exp-chart-canvas-wrap";
           var c1 = document.createElement("canvas");
           host.appendChild(c1);
-          var cfg = expHorizontalBarConfig(job.impactLabels, job.impactValues, true);
-          EXP_CHART_INSTANCES.push(new Chart(c1, cfg));
+          var cfgImpact = expHorizontalBarConfig(job.impactLabels, job.impactValues, true, job.id === "2");
+          EXP_CHART_INSTANCES.push(new Chart(c1, cfgImpact));
           return;
         }
         if (job.impactType === "radar") {
@@ -2641,46 +2713,117 @@
         }
       }
 
-      function expMountSkills(host, job) {
+      function renderSkills(host, job) {
         host.innerHTML = "";
         host.className = "exp-chart-canvas-wrap";
+        host.style.minHeight = "180px";
+
         var cv = document.createElement("canvas");
         host.appendChild(cv);
-        if (job.skillsType === "barH") {
-          var cfg = expHorizontalBarConfig(job.skillsLabels, job.skillsValues, true);
-          EXP_CHART_INSTANCES.push(new Chart(cv, cfg));
-          return;
-        }
-        if (job.skillsType === "stackedTasks") {
-          var o = expBaseOpts();
-          o.indexAxis = "y";
-          o.scales = {
-            x: {
-              stacked: true,
-              max: 100,
-              grid: { color: "rgba(0,212,255,0.08)" },
-              ticks: { color: EXP_MUTED, font: EXP_FONT }
+
+        var labels;
+        var values;
+
+        if (job.skillsType === "stackedTasks" && job.stackedLabels) {
+          var o = {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 800 },
+            indexAxis: "y",
+            plugins: {
+              legend: {
+                display: true,
+                labels: { color: "#8892a4", font: { size: 9 }, boxWidth: 10 }
+              },
+              tooltip: {
+                backgroundColor: "#131e35",
+                titleColor: "#00d4ff",
+                bodyColor: "#e2e8f0",
+                borderColor: "rgba(0,212,255,.2)",
+                borderWidth: 1
+              },
+              datalabels: { display: false }
             },
-            y: {
-              stacked: true,
-              grid: { display: false },
-              ticks: { color: "#e2e8f0", font: EXP_FONT }
+            scales: {
+              x: {
+                stacked: true,
+                max: 100,
+                grid: { color: "rgba(0,212,255,.07)" },
+                ticks: { color: "#8892a4", font: { size: 9 } }
+              },
+              y: {
+                stacked: true,
+                grid: { display: false },
+                ticks: { color: "#e2e8f0", font: { size: 9 } }
+              }
             }
           };
-          var ds = job.stackedDatasets.map(function (d) {
-            return {
-              label: d.label,
-              data: d.data,
-              backgroundColor: d.backgroundColor,
-              borderWidth: 0
-            };
-          });
           EXP_CHART_INSTANCES.push(new Chart(cv, {
             type: "bar",
-            data: { labels: job.stackedLabels, datasets: ds },
+            data: {
+              labels: job.stackedLabels,
+              datasets: job.stackedDatasets.map(function (d) {
+                return { label: d.label, data: d.data, backgroundColor: d.backgroundColor, borderWidth: 0 };
+              })
+            },
             options: o
           }));
+          return;
         }
+
+        labels = job.skillsLabels || [];
+        values = job.skillsValues || [];
+
+        EXP_CHART_INSTANCES.push(new Chart(cv, {
+          type: "bar",
+          data: {
+            labels: labels,
+            datasets: [{
+              data: values,
+              backgroundColor: function (c) {
+                var g = c.chart.ctx.createLinearGradient(0, 0, c.chart.width || 200, 0);
+                g.addColorStop(0, "#00d4ff");
+                g.addColorStop(1, "#f5a623");
+                return g;
+              },
+              borderWidth: 0,
+              borderRadius: 4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: { duration: 800 },
+            indexAxis: "y",
+            plugins: {
+              legend: { display: false },
+              datalabels: { display: false },
+              tooltip: {
+                backgroundColor: "#131e35",
+                titleColor: "#00d4ff",
+                bodyColor: "#e2e8f0",
+                borderColor: "rgba(0,212,255,.2)",
+                borderWidth: 1
+              }
+            },
+            scales: {
+              x: {
+                min: 0,
+                max: 100,
+                grid: { color: "rgba(0,212,255,.07)" },
+                ticks: { color: "#8892a4", font: { size: 9 } }
+              },
+              y: {
+                grid: { display: false },
+                ticks: { color: "#8892a4", font: { size: 9 } }
+              }
+            }
+          }
+        }));
+      }
+
+      function expMountSkills(host, job) {
+        renderSkills(host, job);
       }
 
       function expJobById(id) {
@@ -2777,6 +2920,8 @@
             if (id === currentId) return;
             setActiveTab(id);
             pulseDot(btn);
+            var panel = document.getElementById("exp-detail-panel");
+            if (panel) panel.setAttribute("aria-labelledby", btn.id);
             renderJob(id, { immediate: false });
           });
         });
@@ -2810,6 +2955,8 @@
           });
         });
       })();
+
+
       /* Project expand */
       document.querySelectorAll(".btn-expand").forEach(function (btn) {
         btn.addEventListener("click", function () {
@@ -2829,11 +2976,22 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       });
 
-      /* Contact form — prevent default, terminal echo */
-      document.getElementById("contact-form").addEventListener("submit", function (e) {
-        e.preventDefault();
-        alert("Message queued (demo). Connect via email or LinkedIn for a real response.");
-      });
+      document.getElementById('contactForm')
+        .addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const data = new FormData(this);
+          const res = await fetch('https://formspree.io/f/mwvrjwlk', {
+            method: 'POST',
+            body: data,
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            alert('Message sent! I will get back to you soon.');
+            this.reset();
+          } else {
+            alert('Error sending. Please email me directly at vineelakandunurumuni2024@gmail.com');
+          }
+        });
 
     })();
   </script>
