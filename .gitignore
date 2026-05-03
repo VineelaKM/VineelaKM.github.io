@@ -1,0 +1,10 @@
+# OS
+Thumbs.db
+.DS_Store
+
+# Editor / local
+*.swp
+*.tmp
+
+# Optional: keep CV out of the public repo (remove this line if you want the .docx tracked)
+*.docx
